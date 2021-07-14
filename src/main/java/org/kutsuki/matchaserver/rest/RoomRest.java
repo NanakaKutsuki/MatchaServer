@@ -152,7 +152,9 @@ public class RoomRest extends AbstractDateTimeRest {
 		room.setCityName(city.getCity());
 
 		if (rate != null) {
-		    room.setRate(new BigDecimal(StringUtils.remove(rate, '$')));
+		    rate = StringUtils.remove(rate, '$');
+		    rate = StringUtils.remove(rate, ',');
+		    room.setRate(new BigDecimal(rate));
 		} else {
 		    room.setRate(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP));
 		    room.setSoldOut(true);
@@ -197,7 +199,7 @@ public class RoomRest extends AbstractDateTimeRest {
 		MatchaTracker.LAST_RUNTIME = now();
 	    }
 	} catch (NumberFormatException e) {
-	    String error = "Error parsing price: " + rate + " for: " + hotel.getName() + " at " + hotel.getLink();
+	    String error = "Error parsing price: " + rate + " for: " + hotel.getName() + " at " + href;
 	    service.emailException(error, e);
 	}
 
